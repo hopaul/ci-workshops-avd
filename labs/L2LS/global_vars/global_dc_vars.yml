@@ -21,7 +21,6 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: "{{ ansible_password | password_hash('sha512', salt='arista', rounds=5000) }}"
-    ssh_key: "{{ lookup('ansible.builtin.file', '~/.ssh/id_rsa.pub') }}"
 
 # AAA
 aaa_authorization:
@@ -61,23 +60,6 @@ daemon_terminattr:
 # Point to Point Links MTU Override for Lab
 p2p_uplinks_mtu: 1500
 
-# Login Banner
-banners:
-  motd: |
-    You shall not pass. Unless you are authorized. Then you shall pass.
-    EOF
-
-# Syslog
-logging:
-  vrfs:
-    - name: default
-      source_interface: Management0
-      hosts:
-        - name: 10.200.0.108
-        - name: 10.200.1.108
-        
 # CVP node variables
 cv_collection: v3
 execute_tasks: true
-# arista.avd.cv_deploy role parameters
-cv_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaWQiOjc0NTk4NTk2MjA0NjMzNzg2NjYsImRzbiI6ImF2ZC1sYWIiLCJkc3QiOiJhY2NvdW50IiwiZXhwIjoxNzQ1MTkyMzAwLCJpYXQiOjE3NDM4NzgzMjQsIm9naSI6Mywib2duIjoiRGVmYXVsdCIsInNpZCI6IjJmODYxOTI2NDczZjY4Mzc1MGM3YTRkODdmZTg5MmVkYTVhZmZjOTUyODc5NTcyZTQyYzY3MWQ2YTVhYzRjZjgta2JXUkU4ejJDNjhyaW1paHF4WjF1SDRwVnhCeTJpOVdxSXY2aVNJViJ9.xQJ-W6l0QAJ6V9EUhyGbxG_e1GzbgYR8Pru7vBpNuIFXzNd7THICRBfRT3qa-5DFnrb9oPuHDJIbCaHOHThkT4gmTxTe-M7NACbDMXi15aVH9GJ-NGVEV3vkOyUXhcCIfgZNcRUa8Xv6AzxdttvGP10Mq5a41cQc0lcHXlW0bD6MGK2AgS2TDNb0AvCN2W6TtarJT81oY1lc4uHxDX_4Mz2g0pyaVri9pKjEqmD0pwZrwnrvvFvS720UpTVOZmGMtTta1qpALLJgEjuc8dbo0uloIQIfRQsm6u3rzKRfv6YPMVdbVLCYaMT8hGEgvTbIgu6XlxKsfgakyUPoZX6Pg6Q8u3pAA9efXaXz94R-mVBP7FAUsgfIPVNV88onqiKKP7rvZ6RdtKqZ4_FTbCsD6fNyHNvEw-lcnEnjCscItgdsx8gllb-Qgi6pzZEDnEjOXzbghS7RWXVnQOL4cAN6WtJBGsg3NbroRo5f5s32GmJtRn_6MDi0TFNofvXnnQub7YpbnVLGTOCJqONzrUqsal5T-gOfviv_jv40f4npqjOdV_sRIsE9-EUQO8ct3hyaUUy1NbFKMF2N7agCTnuTS-2vymyXyOg05uYMbhvNniM7vzSlZi-o5wggyHzBVJNUKvEGS7UJqWY13dhSz7a7BOtnFnIqLi7xvIUsib6FoHo
