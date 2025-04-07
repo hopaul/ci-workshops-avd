@@ -17,8 +17,8 @@ port_profiles:
 servers:
 
 # --------------------------------------------------------#
-# # Site1 RACK1 Endpoints
-# # --------------------------------------------------------#
+# Site1 RACK1 Endpoints
+# --------------------------------------------------------#
 
   - name: s1-host1                                      # Server name
     rack: RACK1                                         # Informational RACK (optional)
@@ -30,9 +30,9 @@ servers:
         port_channel:
           mode: active
 
-# # --------------------------------------------------------#
-# # Site1 RACK2 Endpoints
-# # --------------------------------------------------------#
+# --------------------------------------------------------#
+# Site1 RACK2 Endpoints
+# --------------------------------------------------------#
 
   - name: s1-host2                                      # Server name
     rack: RACK2                                         # Informational RACK (optional)
