@@ -208,11 +208,6 @@ router_bgp:
     remote_as: '65100'
     peer: s1-spine2
     description: s1-spine2_Loopback0
-  - ip_address: 10.250.2.7
-    peer_group: EVPN-OVERLAY-CORE
-    remote_as: '65203'
-    peer: s2-brdr1
-    description: s2-brdr1
   - ip_address: 172.16.255.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65203'
@@ -235,20 +230,6 @@ router_bgp:
       import_export_evpn_domains:
       - domain: remote
         route_target: 10010:10010
-    redistribute_routes:
-    - learned
-  - id: 20
-    tenant: S1_FABRIC
-    rd: 10.250.1.7:10020
-    rd_evpn_domain:
-      domain: remote
-      rd: 10.250.1.7:10020
-    route_targets:
-      both:
-      - 10020:10020
-      import_export_evpn_domains:
-      - domain: remote
-        route_target: 10020:10020
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -323,12 +304,6 @@ vlan_interfaces:
   vrf: OVERLAY
   ip_address_virtual: 10.10.10.1/24
   tenant: S1_FABRIC
-- name: Vlan20
-  description: Twenty
-  shutdown: false
-  vrf: OVERLAY
-  ip_address_virtual: 10.20.20.1/24
-  tenant: S1_FABRIC
 - name: Vlan3009
   description: MLAG_L3_VRF_OVERLAY
   shutdown: false
@@ -356,9 +331,6 @@ vlans:
 - id: 10
   name: Ten
   tenant: S1_FABRIC
-- id: 20
-  name: Twenty
-  tenant: S1_FABRIC
 - id: 3009
   name: MLAG_L3_VRF_OVERLAY
   trunk_groups:
@@ -380,8 +352,6 @@ vxlan_interface:
       vlans:
       - id: 10
         vni: 10010
-      - id: 20
-        vni: 10020
       vrfs:
       - name: OVERLAY
         vni: 10

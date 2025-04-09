@@ -21,7 +21,7 @@ cv_verify_certs: false
 
 # arista.avd.eos_config_deploy_cvp role parameters
 cv_collection: v3
-execute_tasks: true
+execute_tasks: false
 
 # Local Users
 local_users:

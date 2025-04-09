@@ -259,7 +259,6 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 10 | Ten | - |
-| 20 | Twenty | - |
 | 3009 | MLAG_L3_VRF_OVERLAY | MLAG |
 | 4093 | MLAG_L3 | MLAG |
 | 4094 | MLAG | MLAG |
@@ -270,9 +269,6 @@ vlan internal order ascending range 1006 1199
 !
 vlan 10
    name Ten
-!
-vlan 20
-   name Twenty
 !
 vlan 3009
    name MLAG_L3_VRF_OVERLAY
@@ -408,7 +404,6 @@ interface Loopback1
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan10 | Ten | OVERLAY | - | False |
-| Vlan20 | Twenty | OVERLAY | - | False |
 | Vlan3009 | MLAG_L3_VRF_OVERLAY | OVERLAY | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
@@ -418,7 +413,6 @@ interface Loopback1
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
 | Vlan10 |  OVERLAY  |  -  |  10.10.10.1/24  |  -  |  -  |  -  |
-| Vlan20 |  OVERLAY  |  -  |  10.20.20.1/24  |  -  |  -  |  -  |
 | Vlan3009 |  OVERLAY  |  10.252.1.8/31  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.252.1.8/31  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.251.1.8/31  |  -  |  -  |  -  |  -  |
@@ -432,12 +426,6 @@ interface Vlan10
    no shutdown
    vrf OVERLAY
    ip address virtual 10.10.10.1/24
-!
-interface Vlan20
-   description Twenty
-   no shutdown
-   vrf OVERLAY
-   ip address virtual 10.20.20.1/24
 !
 interface Vlan3009
    description MLAG_L3_VRF_OVERLAY
@@ -475,7 +463,6 @@ interface Vlan4094
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
 | 10 | 10010 | - | - |
-| 20 | 10020 | - | - |
 
 ##### VRF to VNI and Multicast Group Mappings
 
@@ -493,7 +480,6 @@ interface Vxlan1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
    vxlan vlan 10 vni 10010
-   vxlan vlan 20 vni 10020
    vxlan vrf OVERLAY vni 10
 ```
 
@@ -626,7 +612,6 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 10.250.1.1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.250.1.2 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.250.2.7 | 65203 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.252.1.9 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 172.16.1.16 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.16.1.18 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
@@ -655,7 +640,6 @@ ASN Notation: asplain
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 | 10 | 10.250.1.7:10010 | 10010:10010<br>remote 10010:10010 | - | - | learned |
-| 20 | 10.250.1.7:10020 | 10020:10020<br>remote 10020:10020 | - | - | learned |
 
 #### Router BGP VRFs
 
@@ -702,9 +686,6 @@ router bgp 65103
    neighbor 10.250.1.2 peer group EVPN-OVERLAY-PEERS
    neighbor 10.250.1.2 remote-as 65100
    neighbor 10.250.1.2 description s1-spine2_Loopback0
-   neighbor 10.250.2.7 peer group EVPN-OVERLAY-CORE
-   neighbor 10.250.2.7 remote-as 65203
-   neighbor 10.250.2.7 description s2-brdr1
    neighbor 10.252.1.9 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.252.1.9 description s1-brdr2_Vlan4093
    neighbor 172.16.1.16 peer group IPv4-UNDERLAY-PEERS
@@ -723,13 +704,6 @@ router bgp 65103
       rd evpn domain remote 10.250.1.7:10010
       route-target both 10010:10010
       route-target import export evpn domain remote 10010:10010
-      redistribute learned
-   !
-   vlan 20
-      rd 10.250.1.7:10020
-      rd evpn domain remote 10.250.1.7:10020
-      route-target both 10020:10020
-      route-target import export evpn domain remote 10020:10020
       redistribute learned
    !
    address-family evpn
